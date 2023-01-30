@@ -69,7 +69,7 @@ app.post("/webhook",(req,res)=>{ //i want some
 
 
             switch(msg_body){
-                case "meds": getMedication();
+                case "meds": getMedication(phon_no_id, from);
                              break;
 
                 case "Hi": greeting(phon_no_id, from);
@@ -100,7 +100,7 @@ app.get("/",(req,res)=>{
 });
 
 
-function getMedication(){
+function getMedication(phon_no_id, from){
     db.query("SELECT * FROM medication",(err,results)=>{
         if(err){
             console.log(err);
