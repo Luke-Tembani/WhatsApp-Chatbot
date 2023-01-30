@@ -38,6 +38,7 @@ app.post("/webhook",(req,res)=>{ //i want some
     console.log(JSON.stringify(body_param,null,2));
 
     if(body_param.object){
+
         console.log("inside body param");
         if(body_param.entry && 
             body_param.entry[0].changes && 
@@ -52,73 +53,32 @@ app.post("/webhook",(req,res)=>{ //i want some
                console.log("from "+from);
                console.log("boady param "+msg_body);
 
-               axios({
-                   method:"POST",
-                   url:"https://graph.facebook.com/v13.0/"+phon_no_id+"/messages?access_token="+token,
-                   data:{
-                    messaging_product: "whatsapp",
-                    recipient_type: "individual",
-                    to: from,
-                    type: "interactive",
-                    interactive: {
-                        type: "list",
-                        header: {
-                            type: "text",
-                            text: "What would you like to do today?"
-                        },
-                        body: {
-                            text: "To begin, tap menu and select one of the options"
-                        },
-                        footer: {
-                            text: "Code Dev 2023"
-                        },
-                        action: {
-                            button: "OPTIONS",
-                            sections: [
-                                {
-                                    title: "NEW ORDER",
-                                    rows: [
-                                        {
-                                            id: "<LIST_SECTION_1_ROW_1_ID>",
-                                            title: "Upload Prescription",
-                                            description: "Upload an image of the medications you want to order"
-                                        },
-                                        {
-                                            id: "<LIST_SECTION_1_ROW_2_ID>",
-                                            title: "Over The Counter",
-                                            description: "Enter name of medications you want to order"
-                                        }
-                                    ]
-                                },
-                                {
-                                    title: "Book Appointment",
-                                    rows: [
-                                        {
-                                            id: "<LIST_SECTION_2_ROW_1_ID>",
-                                            title: "Dr. Luke",
-                                            description: "Dentist"
-                                        },
-                                        {
-                                            id: "<LIST_SECTION_2_ROW_2_ID>",
-                                            title: "Dr. Tembani",
-                                            description: "Optician"
-                                        }
-                                    ]
-                                }
-                            ]
+
+               if(msg_body === "Hie"){
+
+                axios({
+                    method:"POST",
+                    url:"https://graph.facebook.com/v13.0/"+phon_no_id+"/messages?access_token="+token,
+                    data:{
+
+                        messaging_product:"whatsapp",
+                        to:from,
+                        text:{
+                            body:"Hello, how are you?"
                         }
+                 
+                    },
+                    headers:{
+                        "Content-Type":"application/json"
                     }
-
-                
-                   },
-                   headers:{
-                       "Content-Type":"application/json"
-                   }
-
-               });
+ 
+                });
+               }
 
                res.sendStatus(200);
-            }else{
+            }
+            
+            else{
                 res.sendStatus(404);
             }
 
