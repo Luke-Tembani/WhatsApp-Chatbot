@@ -12,6 +12,8 @@ app.listen(process.env.PORT,()=>{
     console.log("webhook is listening");
 });
 
+
+
 //to verify the callback url from dashboard side - cloud api side
 app.get("/webhook",(req,res)=>{
    let mode=req.query["hub.mode"];
@@ -30,6 +32,10 @@ app.get("/webhook",(req,res)=>{
     }
 
 });
+
+
+
+
 
 app.post("/webhook",(req,res)=>{ //i want some 
 
@@ -54,25 +60,9 @@ app.post("/webhook",(req,res)=>{ //i want some
                console.log("boady param "+msg_body);
 
 
-               if(msg_body === "Hie"){
+               if(msg_body === "Hie" || "Hello" || "Hey" || "Howdy" || "Hi" || "hie" || "hi" || "hello" || "howdy"){
 
-                axios({
-                    method:"POST",
-                    url:"https://graph.facebook.com/v13.0/"+phon_no_id+"/messages?access_token="+token,
-                    data:{
-
-                        messaging_product:"whatsapp",
-                        to:from,
-                        text:{
-                            body:"Hello, how are you?"
-                        }
-                 
-                    },
-                    headers:{
-                        "Content-Type":"application/json"
-                    }
- 
-                });
+                greeting(phon_no_id, from);
                }
 
                res.sendStatus(200);
@@ -89,3 +79,20 @@ app.post("/webhook",(req,res)=>{ //i want some
 app.get("/",(req,res)=>{
     res.status(200).send("Hi This is Code Dev WebHook Setup");
 });
+
+function greeting(phon_no_id, from) {
+    axios({
+        method: "POST",
+        url: "https://graph.facebook.com/v13.0/" + phon_no_id + "/messages?access_token=" + token,
+        data: {
+            messaging_product: "whatsapp",
+            to: from,
+            text: {
+                body: "Hello, how are you?"
+            }
+        },
+        headers: {
+            "Content-Type": "application/json"
+        }
+    });
+}
