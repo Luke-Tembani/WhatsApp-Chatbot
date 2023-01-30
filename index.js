@@ -56,29 +56,29 @@ app.post("/webhook",(req,res)=>{ //i want some
                    method:"POST",
                    url:"https://graph.facebook.com/v13.0/"+phon_no_id+"/messages?access_token="+token,
                    data:{
-                    "messaging_product": "whatsapp",
-                    "recipient_type": "individual",
-                    "to": "{{Recipient-Phone-Number}}",
-                    "type": "interactive",
-                    "interactive": {
-                        "type": "button",
-                        "body": {
-                            "text": "<BUTTON_TEXT>"
+                    messaging_product: "whatsapp",
+                    recipient_type: "individual",
+                    to: from,
+                    type: "interactive",
+                    interactive: {
+                        type: "button",
+                        body: {
+                            text: "<BUTTON_TEXT>"
                         },
-                        "action": {
-                            "buttons": [
+                        action: {
+                            buttons: [
                                 {
-                                    "type": "reply",
-                                    "reply": {
-                                        "id": "<UNIQUE_BUTTON_ID_1>",
-                                        "title": "<BUTTON_TITLE_1>"
+                                    type: "reply",
+                                    reply: {
+                                        id: "<UNIQUE_BUTTON_ID_1>",
+                                        title: "PAY NOW"
                                     }
                                 },
                                 {
-                                    "type": "reply",
-                                    "reply": {
-                                        "id": "<UNIQUE_BUTTON_ID_2>",
-                                        "title": "<BUTTON_TITLE_2>"
+                                    type: "reply",
+                                    reply: {
+                                        id: "<UNIQUE_BUTTON_ID_2>",
+                                        title: "ENTER ADDRESS"
                                     }
                                 }
                             ]
