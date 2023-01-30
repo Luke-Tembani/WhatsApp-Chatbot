@@ -80,7 +80,7 @@ app.post("/webhook",(req,res)=>{ //i want some
                              break;
                              
                              
-                 default: notFound();            
+                 default: notFound(phon_no_id, from);            
             }
 
                res.sendStatus(200);
@@ -130,7 +130,7 @@ function getMedication(phon_no_id, from){
 }
 
 
-function notFound(){
+function notFound(phon_no_id, from){
 
     axios({
         method: "POST",
