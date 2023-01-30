@@ -63,7 +63,7 @@ app.post("/webhook",(req,res)=>{ //i want some
                if(msg_body === "Hie" || "Hello" || "Hey" || "Howdy" || "Hi" || "hie" || "hi" || "hello" || "howdy"){
 
                 greeting(phon_no_id, from);
-                sendMenu();
+                sendMenu(phon_no_id, from);
                }
 
                res.sendStatus(200);
