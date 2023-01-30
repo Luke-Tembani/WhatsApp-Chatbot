@@ -1,0 +1,28 @@
+                    messaging_product: "whatsapp",
+                    recipient_type: "individual",
+                    to: from,
+                    type: "interactive",
+                    interactive: {
+                        type: "button",
+                        body: {
+                            text: "<BUTTON_TEXT>"
+                        },
+                        action: {
+                            buttons: [
+                                {
+                                    type: "reply",
+                                    reply: {
+                                        id: "<UNIQUE_BUTTON_ID_1>",
+                                        title: "PAY NOW"
+                                    }
+                                },
+                                {
+                                    type: "reply",
+                                    reply: {
+                                        id: "<UNIQUE_BUTTON_ID_2>",
+                                        title: "ENTER ADDRESS"
+                                    }
+                                }
+                            ]
+                        }
+                    }

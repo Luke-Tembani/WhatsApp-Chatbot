@@ -61,29 +61,54 @@ app.post("/webhook",(req,res)=>{ //i want some
                     to: from,
                     type: "interactive",
                     interactive: {
-                        type: "button",
+                        type: "list",
+                        header: {
+                            type: "text",
+                            text: "What would you like to do today?"
+                        },
                         body: {
-                            text: "<BUTTON_TEXT>"
+                            text: "To begin, tap menu and select one of the options"
+                        },
+                        footer: {
+                            text: "Code Dev 2023"
                         },
                         action: {
-                            buttons: [
+                            button: "OPTIONS",
+                            sections: [
                                 {
-                                    type: "reply",
-                                    reply: {
-                                        id: "<UNIQUE_BUTTON_ID_1>",
-                                        title: "PAY NOW"
-                                    }
+                                    title: "NEW ORDER",
+                                    rows: [
+                                        {
+                                            id: "<LIST_SECTION_1_ROW_1_ID>",
+                                            title: "Upload Prescription",
+                                            description: "Upload an image of the medications you want to order"
+                                        },
+                                        {
+                                            id: "<LIST_SECTION_1_ROW_2_ID>",
+                                            title: "Over The Counter",
+                                            description: "Enter name of medications you want to order"
+                                        }
+                                    ]
                                 },
                                 {
-                                    type: "reply",
-                                    reply: {
-                                        id: "<UNIQUE_BUTTON_ID_2>",
-                                        title: "ENTER ADDRESS"
-                                    }
+                                    title: "Book Appointment",
+                                    rows: [
+                                        {
+                                            id: "<LIST_SECTION_2_ROW_1_ID>",
+                                            title: "Dr. Luke",
+                                            description: "Dentist"
+                                        },
+                                        {
+                                            id: "<LIST_SECTION_2_ROW_2_ID>",
+                                            title: "Dr. Tembani",
+                                            description: "Optician"
+                                        }
+                                    ]
                                 }
                             ]
                         }
                     }
+
                 
                    },
                    headers:{
