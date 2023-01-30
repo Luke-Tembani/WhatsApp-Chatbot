@@ -1,13 +1,11 @@
 const express=require("express");
 const body_parser=require("body-parser");
-const axios=require("axios");
+const switchMatcher = require("./matcher");
 require('dotenv').config();
-const db = require("./db");
-
 const app=express().use(body_parser.json());
+const mytoken=process.env.MYTOKEN;
 
-const token=process.env.TOKEN;
-const mytoken=process.env.MYTOKEN;//prasath_token
+
 
 app.listen(process.env.PORT,()=>{
     console.log("webhook is listening");
@@ -35,11 +33,7 @@ app.get("/webhook",(req,res)=>{
 });
 
 
-
-
-
-app.post("/webhook",(req,res)=>{ //i want some 
-
+app.post("/webhook",(req,res)=>{
     let body_param=req.body;
 
     console.log(JSON.stringify(body_param,null,2));
@@ -60,28 +54,7 @@ app.post("/webhook",(req,res)=>{ //i want some
                console.log("from "+from);
                console.log("boady param "+msg_body);
 
-
-            //    if(msg_body === "Hie" || "Hello" || "Hey" || "Howdy" || "Hi" || "hie" || "hi" || "hello" || "howdy"){
-
-            //     greeting(phon_no_id, from);
-            //     sendMenu(phon_no_id, from);
-            //    }
-
-
-            switch(msg_body){
-                case "meds": getMedication(phon_no_id, from);
-                             break;
-
-                case "Hi": greeting(phon_no_id, from);
-                        break;
-                        
-                        
-                case "Menu": sendMenu(phon_no_id, from);
-                             break;
-                             
-                             
-                 default: notFound(phon_no_id, from);            
-            }
+            switchMatcher.switchMatcher(msg_body,phon_no_id,from);
 
                res.sendStatus(200);
             }
@@ -95,138 +68,5 @@ app.post("/webhook",(req,res)=>{ //i want some
 });
 
 app.get("/",(req,res)=>{
-    getMedication();
     res.status(200).send("Hi This is Code Dev WebHook Setup");
 });
-
-
-function getMedication(phon_no_id, from){
-    db.query("SELECT * FROM medication",(err,results)=>{
-        if(err){
-            console.log(err);
-        }else{
-
-            for(let i =0; i<= results.length-1;i++){
-                console.log();
-            axios({
-                method: "POST",
-                url: "https://graph.facebook.com/v13.0/" + phon_no_id + "/messages?access_token=" + token,
-                data: {
-                    messaging_product: "whatsapp",
-                    to: from,
-                    text: {
-                        body: results[i].name + " "+ "- $"+results[i].price
-                    }
-                },
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            });
-
-        }
-           
-        }
-    })
-}
-
-
-function notFound(phon_no_id, from){
-
-    axios({
-        method: "POST",
-        url: "https://graph.facebook.com/v13.0/" + phon_no_id + "/messages?access_token=" + token,
-        data: {
-            messaging_product: "whatsapp",
-            to: from,
-            text: {
-                body: "Invalid Option"
-            }
-        },
-        headers: {
-            "Content-Type": "application/json"
-        }
-    });
-
-}
-
-function greeting(phon_no_id, from) {
-    axios({
-        method: "POST",
-        url: "https://graph.facebook.com/v13.0/" + phon_no_id + "/messages?access_token=" + token,
-        data: {
-            messaging_product: "whatsapp",
-            to: from,
-            text: {
-                body: "Hello, how are you?"
-            }
-        },
-        headers: {
-            "Content-Type": "application/json"
-        }
-    });
-}
-
-
-function sendMenu(phon_no_id, from){
-    axios({
-        method: "POST",
-        url: "https://graph.facebook.com/v13.0/" + phon_no_id + "/messages?access_token=" + token,
-        data: {
-            messaging_product: "whatsapp",
-            recipient_type: "individual",
-            to: from,
-            type: "interactive",
-            interactive: {
-                type: "list",
-                header: {
-                    type: "text",
-                    text: "What would you like to do today?"
-                },
-                body: {
-                    text: "To begin, tap menu and select one of the options"
-                },
-                footer: {
-                    text: "Code Dev 2023"
-                },
-                action: {
-                    button: "OPTIONS",
-                    sections: [
-                        {
-                            title: "NEW ORDER",
-                            rows: [
-                                {
-                                    id: "<LIST_SECTION_1_ROW_1_ID>",
-                                    title: "Upload Prescription",
-                                    description: "Upload an image of the medications you want to order"
-                                },
-                                {
-                                    id: "<LIST_SECTION_1_ROW_2_ID>",
-                                    title: "Over The Counter",
-                                    description: "Enter name of medications you want to order"
-                                }
-                            ]
-                        },
-                        {
-                            title: "Book Appointment",
-                            rows: [
-                                {
-                                    id: "<LIST_SECTION_2_ROW_1_ID>",
-                                    title: "Dr. Luke",
-                                    description: "Dentist"
-                                },
-                                {
-                                    id: "<LIST_SECTION_2_ROW_2_ID>",
-                                    title: "Dr. Tembani",
-                                    description: "Optician"
-                                }
-                            ]
-                        }
-                    ]
-                }
-            }
-        },
-        headers: {
-            "Content-Type": "application/json"
-        }
-    });
-}
